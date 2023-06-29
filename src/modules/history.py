@@ -1,6 +1,5 @@
 import os
 import streamlit as st
-from streamlit_chat import message
 
 class ChatHistory:
     
@@ -36,17 +35,15 @@ class ChatHistory:
     def append(self, mode, message):
         st.session_state[mode].append(message)
 
+
     def generate_messages(self, container):
         if st.session_state["assistant"]:
             with container:
                 for i in range(len(st.session_state["assistant"])):
-                    message(
-                        st.session_state["user"][i],
-                        is_user=True,
-                        key=f"history_{i}_user",
-                        avatar_style="big-smile",
-                    )
-                    message(st.session_state["assistant"][i], key=str(i), avatar_style="thumbs")
+                    if st.session_state["user"][i]:
+                        st.chat_message("user").write(st.session_state["user"][i])
+                    if st.session_state["assistant"][i]:
+                        st.chat_message("assistant").write(st.session_state["assistant"][i])
 
     def load(self):
         if os.path.exists(self.history_file):

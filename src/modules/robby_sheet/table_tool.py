@@ -4,7 +4,7 @@ from io import StringIO, BytesIO
 import matplotlib.pyplot as plt
 import streamlit as st
 from langchain.callbacks import get_openai_callback
-from streamlit_chat import message
+
 
 from pandasai import PandasAI
 from pandasai.llm.openai import OpenAI
@@ -64,6 +64,6 @@ class PandasAgent :
     def display_chat_history(self):
         for i, (sender, message_text) in enumerate(st.session_state.chat_history):
             if sender == "user":
-                message(message_text, is_user=True, key=f"{i}_user")
+                st.chat_message("user").write(message_text)
             else:
-                message(message_text, key=f"{i}")
+                st.chat_message("agent").write(message_text)
